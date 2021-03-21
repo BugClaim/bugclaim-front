@@ -1,0 +1,39 @@
+<% if (vm.visible('assigned_to')) { %>
+<div class="card-assigned-to <%= vm.item.getIn(['model', 'is_iocaine']) ? 'is_iocaine': '' %>"><% if (!vm.item.get('assigned_to')) { %>
+  <div class="card-user-avatar card-not-assigned"><img title="<%= translate('COMMON.ASSIGNED_TO.NOT_ASSIGNED') %>" src="/v-1616340879584/images/unnamed.png"/><% if (vm.visible('assigned_to_extended')) { %><span class="card-not-assigned-title"><%= translate('COMMON.ASSIGNED_TO.NOT_ASSIGNED') %></span><% } %></div><% } %>
+  <% if (vm.item.get('assigned_to')) { %>
+  <% if (vm.item.get('assigned_users_preview')) { %>
+  <% _.forEach(vm.item.get('assigned_users_preview').toJS(), function(assignedUser, index) { %>
+  <div class="card-user-avatar"><% if (index < 2 || vm.item.get('assigned_users').size == 3) { %><img src="<%- avatars[assignedUser.id].url %>" title="<%- avatars[assignedUser.id].fullName %>" alt="<%- avatars[assignedUser.id].fullName %>" style="background-color: <%- avatars[assignedUser.id].bg || '' %>"/><% } %><% if (index == 2 && vm.item.get('assigned_users').size > 3) { %><span title="<%= translate('COMMON.CARD.EXTRA_ASSIGNED_USERS', { total: (vm.item.get('assigned_users').size - 2) }) %>" class="extra-assigned"><%= vm.item.get('assigned_users').size - 2 %>+</span><% } %>
+  </div><% }); %>
+  <% } else { %>
+  <div class="card-user-avatar"><img src="<%- avatars[vm.item.getIn(['assigned_to', 'id'])].url %>" title="<%- avatars[vm.item.getIn(['assigned_to', 'id'])].fullName %>" alt="<%- avatars[vm.item.getIn(['assigned_to', 'id'])].fullName %>" style="background-color: <%- avatars[vm.item.getIn(['assigned_to', 'id'])].bg || '' %>"/><% if (vm.item.getIn(['model', 'is_iocaine'])) { %>
+    <div class="card-iocaine-user-bg">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 28 17">
+        <path fill="#B400D1" fill-opacity=".5" d="M27.409 3c0 7.732-6.136 14-13.705 14C6.136 17 0 10.732 0 3s.703 3.5 8.272 3.5S27.409-4.732 27.409 3z"></path>
+      </svg>
+    </div><% } %>
+  </div><% } %>
+  <% } %>
+  <% if(vm.zoomLevel > 0 && (checkPermission(vm.getModifyPermisionKey()) || checkPermission(vm.getDeletePermisionKey()))) { %>
+  <div class="card-actions"><% if(checkPermission(vm.getModifyPermisionKey())) { %>
+    <button variant="icon" class="btn-link card-assigned-to-action"><%= svg({svgIcon: "icon-assign-to"}) %><span><%= translate('COMMON.CARD.ASSIGN_TO') %></span></button><% } %>
+    <div class="card-detail-actions"><% if(checkPermission(vm.getModifyPermisionKey())) { %>
+      <button class="btn-form e2e-edit js-card-edit-content">
+        <% if(vm.item.get('loading-edit')) { %>
+        <%= loading %>
+        <% } else { %>
+        <%= svg({svgIcon: "icon-edit", svgTitle: translate('COMMON.CARD.EDIT') }) %>
+        <% } %>
+      </button><% } %>
+      <% if(checkPermission(vm.getDeletePermisionKey())) { %>
+      <button class="btn-form card-delete e2e-edit js-card-delete">
+        <% if(vm.item.get('loading-delete')) { %>
+        <%= loading %>
+        <% } else { %>
+        <%= svg({svgIcon: "icon-trash", svgTitle: translate('COMMON.CARD.DELETE') }) %>
+        <% } %>
+      </button><% } %>
+    </div>
+  </div><% } %>
+</div><% } %>

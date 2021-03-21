@@ -1,0 +1,13 @@
+.create-project-action
+    button.btn-small.create-project-action-cancel(
+        variant="secondary"
+        type="button"
+        ng-click="vm.onCancelForm()"
+        title="{{'PROJECT.CREATE.BACK' | translate}}"
+        translate="PROJECT.CREATE.BACK"
+    )
+    button.btn-small.create-project-action-submit.e2e-create-project-action-submit(
+        type="submit"
+        tg-loading="vm.formSubmitLoading"
+        translate="PROJECT.CREATE.TITLE"
+    )
